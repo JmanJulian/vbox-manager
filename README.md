@@ -7,3 +7,6 @@ To use it just place all files in a folder and place that folder in youre userfo
 EXAMPLE: /home/YOURUSERNAME/.local/share/cockpit/vbox-manager
 
 ![alt tag](https://github.com/JmanJulian/vbox-manager/blob/main/img/1.PNG)
+![alt tag](https://github.com/JmanJulian/vbox-manager/blob/main/img/2.PNG)
+![alt tag](https://github.com/JmanJulian/vbox-manager/blob/main/img/3.PNG)
+![alt tag](https://github.com/JmanJulian/vbox-manager/blob/main/img/4.PNG)
