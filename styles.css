@@ -1,0 +1,427 @@
+/* ==========================================================================
+   Base Layout & Theme Overrides (Native Light/Dark Media Queries)
+   ========================================================================== */
+:root {
+    /* DEFAULT LIGHT MODE THEME RULES */
+    --vbox-bg-100: #f8f9fa;
+    --vbox-bg-200: #ffffff;
+    --vbox-bg-300: #f1f3f5;
+    --vbox-text: #212529;
+    --vbox-text-muted: #6c757d;
+    --vbox-border: #dee2e6;
+    --vbox-primary: #0066cc;
+    --vbox-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* AUTOMATIC DARK MODE SWITCH OVERRIDES */
+        --vbox-bg-100: #0f1114;
+        --vbox-bg-200: #15171a;
+        --vbox-bg-300: #1c1f23;
+        --vbox-text: #d2d4d7;
+        --vbox-text-muted: #b8bbbe;
+        --vbox-border: #3c3f42;
+        --vbox-primary: #0066cc;
+        --vbox-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+}
+
+html, body {
+    background-color: var(--vbox-bg-100) !important;
+    color: var(--vbox-text) !important;
+    font-family: sans-serif !important;
+    margin: 0px !important;
+    padding: 0px !important;
+    height: 100vh !important;
+    overflow: hidden !important; /* Disables standard page body scrolling entirely */
+}
+
+/* MASTER VIEWPORT LAYOUT: HOLDS PARALLEL LEFT AND RIGHT CORE CHANNELS */
+.main-widescreen-viewport {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 20px !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+    height: 100vh !important;
+    width: 100% !important;
+    align-items: flex-start !important;
+}
+
+/* LEFT FLOW CHANNEL SYSTEM */
+.left-layout-channel {
+    flex: 1 1 auto !important;
+    max-width: 650px !important;
+    height: calc(100vh - 40px) !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* FIXED TABS BAR HEADER */
+.left-tab-header {
+    flex: 0 0 auto !important;
+    margin-bottom: 10px !important;
+    background-color: var(--vbox-bg-100) !important;
+}
+
+/* SCROLLABLE PANEL PORTION FOR FORM CONFIGS ONLY */
+.left-scrollable-body {
+    flex: 1 1 auto !important;
+    overflow-y: auto !important; /* Only forms card content will roll up/down now */
+    padding-right: 5px !important;
+}
+
+/* RIGHT MONITOR CHANNEL */
+.right-monitor-channel {
+    flex: 0 0 600px !important; /* Keeps the monitor locked at an ideal 600px width */
+    margin-top: 0px !important; /* FIXED: Destroys top offset blank spatial gaps */
+}
+
+h3 {
+    color: var(--vbox-text) !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    margin: 0px 0px 10px 0px !important;
+    border-bottom: 1px solid var(--vbox-border) !important;
+    padding-bottom: 5px !important;
+}
+
+/* CARD CONTAINERS: SEPARATES CONTROLS ON EXTENSION PANELS */
+.card {
+    background-color: var(--vbox-bg-200) !important;
+    border: 1px solid var(--vbox-border) !important;
+    border-bottom: 3px solid var(--vbox-primary) !important;
+    padding: 12px !important;
+    border-radius: 3px !important;
+    margin: 0px 0px 8px 0px !important;
+    max-width: 650px !important;
+    box-shadow: var(--vbox-shadow) !important;
+}
+
+.dense-card { padding: 10px !important; }
+.card-danger-border { border: 1px solid #c91818 !important; }
+.form-group {
+    margin: 0px 0px 4px 0px !important;
+}
+
+.slider-dense-group {
+    margin: 8px 0px !important;
+}
+
+label {
+    display: block !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    margin: 0px 0px 4px 0px !important;
+    color: var(--vbox-text-muted) !important;
+}
+
+/* Form inputs & dropdown windows */
+input, select {
+    width: 100% !important;
+    padding: 5px 8px !important;
+    box-sizing: border-box !important;
+    background-color: var(--vbox-bg-100) !important;
+    border: 1px solid var(--vbox-border) !important;
+    color: var(--vbox-text) !important;
+    border-radius: 3px !important;
+    font-size: 13px !important;
+    margin: 0px 0px 4px 0px !important;
+    height: auto !important;
+}
+
+input:focus, select:focus {
+    border-color: var(--vbox-primary) !important;
+    outline: none !important;
+}
+
+/* CSP ALIGNMENT LAYOUT RULES (CLEARS INLINE STYLE COMPLIANCE ERRORS) */
+.space-between-row {
+    display: flex !important;
+    justify-content: space-between !important;
+}
+
+.grid-two-columns {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 5px !important;
+    margin-bottom: 4px !important;
+}
+
+.monospace-display {
+    font-family: monospace !important;
+    font-size: 12px !important;
+}
+
+.bold-green { color: #00cc66 !important; font-weight: bold !important; }
+.muted-divider { color: var(--vbox-text-muted) !important; }
+.muted-text { color: var(--vbox-text-muted) !important; }
+.spacer-top { margin-top: 10px !important; }
+.zero-margin { margin: 0px !important; }
+.danger-paragraph { font-size: 12px !important; color: var(--vbox-text-muted) !important; margin: 0 0 8px 0 !important; }
+.execution-log-label { margin: 12px 0px 0px 0px !important; display: block !important; font-weight: 600 !important; }
+
+.picker-title { font-size: 12px !important; color: var(--vbox-text-muted) !important; }
+.picker-search-row { display: flex !important; gap: 5px !important; margin: 0px 0px 5px 0px !important; }
+
+/* FIXED: Forces the picker row buttons to display their full text layout without truncation */
+.picker-search-row button.flex-shrink-btn {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    padding: 5px 14px !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+}
+
+.picker-search-row input {
+    flex: 1 1 auto !important;
+}
+
+/* Flexbox rows handling uniform button alignment */
+.flex-buttons {
+    display: flex !important;
+    gap: 5px !important;
+    margin: 4px 0px 0px 0px !important;
+    flex-wrap: nowrap !important;
+    width: 100% !important;
+}
+
+/* HIGH-DENSITY CONSOLE BUTTONS */
+button {
+    flex: 1 1 0% !important;
+    background-color: var(--vbox-primary) !important;
+    color: #ffffff !important;
+    border: 1px solid transparent !important;
+    padding: 6px 10px !important;
+    border-radius: 3px !important;
+    cursor: pointer !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    margin: 0px !important;
+    display: inline-block !important;
+    text-align: center !important;
+}
+
+.dense-btn {
+    padding: 5px 8px !important;
+    font-size: 12px !important;
+}
+
+.inline-dense-btn {
+    padding: 3px 6px !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    width: auto !important;
+    flex: 0 1 auto !important;
+}
+
+button:hover { filter: brightness(85%) !important; }
+button.danger { background-color: #c91818 !important; }
+button.danger:hover { background-color: #a30000 !important; }
+button.success { background-color: #1e8a3b !important; }
+button.success:hover { background-color: #156229 !important; }
+
+button.secondary {
+    background-color: transparent !important;
+    border: 1px solid var(--vbox-border) !important;
+    color: var(--vbox-text-muted) !important;
+}
+button.secondary:hover {
+    background-color: var(--vbox-bg-100) !important;
+    color: var(--vbox-text) !important;
+    border-color: var(--vbox-text-muted) !important;
+}
+
+button:disabled {
+    background-color: var(--vbox-bg-100) !important;
+    color: var(--vbox-text-muted) !important;
+    border: 1px solid var(--vbox-border) !important;
+    cursor: not-allowed !important;
+    opacity: 0.5 !important;
+    pointer-events: none !important;
+}
+.status-badge {
+    display: inline-block !important;
+    padding: 2px 6px !important;
+    border-radius: 2px !important;
+    font-size: 10px !important;
+    font-weight: bold !important;
+    color: #ffffff !important;
+    margin: 0px !important;
+    text-transform: uppercase !important;
+}
+.status-off { background-color: #c91818 !important; }
+.status-on { background-color: #1e8a3b !important; }
+
+.tabs-container { display: flex !important; gap: 5px !important; margin-bottom: 0px !important; max-width: 650px !important; border-bottom: 2px solid var(--vbox-border) !important; padding-bottom: 5px !important; width: 100% !important; }
+.tab-link { flex: 1 1 0% !important; background-color: transparent !important; color: var(--vbox-text-muted) !important; border: 1px solid var(--vbox-border) !important; border-bottom: none !important; padding: 6px 12px !important; border-radius: 3px 3px 0 0 !important; font-size: 13px !important; text-align: center !important; white-space: nowrap !important; }
+.tab-link:hover { background-color: var(--vbox-bg-300) !important; color: var(--vbox-text) !important; }
+.tab-link.active { background-color: var(--vbox-primary) !important; color: #ffffff !important; border-color: var(--vbox-primary) !important; }
+.tab-content { display: none !important; }
+.tab-content.active-content { display: block !important; }
+.checkbox-row { display: flex !important; align-items: center !important; gap: 8px !important; margin-bottom: 10px !important; }
+.checkbox-row input[type="checkbox"] { width: auto !important; margin: 0px !important; cursor: pointer !important; flex-shrink: 0 !important; }
+.checkbox-row label { display: inline-block !important; margin: 0px !important; cursor: pointer !important; font-weight: 500 !important; font-size: 12px !important; }
+
+/* ================= HIGH-DENSITY CLUSTER INVENTORY DATAGRID ================= */
+.table-container {
+    background-color: var(--vbox-bg-200) !important;
+    border: 1px solid var(--vbox-border) !important;
+    border-bottom: 3px solid var(--vbox-primary) !important;
+    border-radius: 3px !important;
+    margin-bottom: 10px !important;
+    max-width: 650px !important;
+    box-shadow: var(--vbox-shadow) !important;
+    overflow: hidden !important;
+}
+
+.table-header-toolbar {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    background-color: var(--vbox-bg-300) !important;
+    padding: 8px 12px !important;
+    border-bottom: 1px solid var(--vbox-border) !important;
+}
+
+.toolbar-title {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: var(--vbox-text) !important;
+}
+
+.dense-data-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 12px !important;
+    text-align: left !important;
+}
+
+.dense-data-table th {
+    background-color: var(--vbox-bg-300) !important;
+    color: var(--vbox-text-muted) !important;
+    font-weight: 600 !important;
+    padding: 6px 10px !important;
+    border-bottom: 2px solid var(--vbox-border) !important;
+    text-transform: uppercase !important;
+    font-size: 10px !important;
+    letter-spacing: 0.5px !important;
+}
+
+.dense-data-table td {
+    padding: 5px 10px !important;
+    border-bottom: 1px solid var(--vbox-border) !important;
+    color: var(--vbox-text) !important;
+    vertical-align: middle !important;
+}
+
+.dense-data-table tbody tr {
+    cursor: pointer !important;
+    transition: background-color 0.15s !important;
+}
+.dense-data-table tbody tr:hover { background-color: var(--vbox-bg-300) !important; }
+
+.dense-data-table tbody tr.selected-table-row {
+    background-color: var(--vbox-bg-300) !important;
+    border-left: 3px solid var(--vbox-primary) !important;
+}
+.dense-data-table tbody tr.selected-table-row td { border-bottom: 1px solid var(--vbox-border) !important; }
+.table-placeholder { text-align: center !important; padding: 20px !important; color: var(--vbox-text-muted) !important; font-style: italic !important; }
+
+/* COMPACT ACCORDION DESIGN STYLES */
+.accordion-item {
+    background-color: var(--vbox-bg-200) !important;
+    border: 1px solid var(--vbox-border) !important;
+    border-radius: 3px !important;
+    overflow: hidden !important;
+    max-width: 650px !important;
+}
+
+.accordion-trigger {
+    width: 100% !important;
+    background-color: var(--vbox-bg-300) !important;
+    color: var(--vbox-text) !important;
+    border: none !important;
+    padding: 10px 12px !important;
+    text-align: left !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    border-radius: 0px !important;
+}
+.accordion-trigger:hover { background-color: var(--vbox-bg-100) !important; }
+
+.accordion-panel {
+    display: none !important;
+    padding: 10px !important;
+    background-color: var(--vbox-bg-200) !important;
+    border-top: 1px solid var(--vbox-border) !important;
+}
+.accordion-panel.show-panel { display: block !important; }
+
+/* LOGS BOXES AND REPOSITORY PICKERS */
+#output, #vminfo {
+    background-color: var(--vbox-bg-100) !important;
+    border: 1px solid var(--vbox-border) !important;
+    padding: 10px !important;
+    border-radius: 3px !important;
+    font-family: monospace !important;
+    white-space: pre-wrap !important;
+    margin: 4px 0px 0px 0px !important;
+    max-height: 140px !important;
+    overflow-y: auto !important;
+    color: #00cc66 !important;
+    font-size: 12px !important;
+}
+
+#vminfo { background-color: var(--vbox-bg-300) !important; border: 1px solid var(--vbox-border) !important; color: var(--vbox-text) !important; max-height: 180px !important; font-family: sans-serif !important; }
+.picker-container { background-color: var(--vbox-bg-300) !important; border: 1px dashed var(--vbox-text-muted) !important; padding: 8px !important; border-radius: 3px !important; margin: 4px 0px 0px 0px !important; }
+.monitor-fixed-card { width: 600px !important; border-bottom: 3px solid var(--vbox-text) !important; border-radius: 5px !important; margin: 0px !important; }
+.video-monitor-frame { width: 100% !important; height: 450px !important; background-color: #000000 !important; border: 1px solid var(--vbox-border) !important; border-radius: 4px !important; display: flex !important; align-items: center !important; justify-content: center !important; overflow: hidden !important; }
+.monitor-header-fix { border-bottom: 1px solid var(--vbox-border) !important; padding-bottom: 5px !important; }
+.monitor-btn-fix { margin-top: 10px !important; }
+
+/* HARDWARE RANGE REGULATOR MECHANICS */
+.hardware-slider {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    width: 100% !important;
+    height: 6px !important;
+    border-radius: 3px !important;
+    outline: none !important;
+    margin: 8px 0px !important;
+    border: none !important;
+    background: var(--vbox-bg-300) !important;
+}
+.range-ram { background: linear-gradient(to right, #1e8a3b 0%, #1e8a3b var(--safe-pct, 75%), #c91818 var(--safe-pct, 75%), #c91818 100%) !important; }
+.range-cpu { background: linear-gradient(to right, #1e8a3b 0%, #1e8a3b var(--safe-pct, 85%), #c91818 var(--safe-pct, 85%), #c91818 100%) !important; }
+.hardware-slider::-webkit-slider-thumb { -webkit-appearance: none !important; appearance: none !important; width: 16px !important; height: 16px !important; border-radius: 50% !important; background: #ffffff !important; border: 2px solid var(--vbox-primary) !important; cursor: pointer !important; transition: transform 0.1s !important; }
+.hardware-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+/* COMPACT SCREEN FALLBACK WINDOW RESPONSIVENESS */
+@media (max-width: 1320px) {
+    html, body { overflow: auto !important; height: auto !important; }
+    .main-widescreen-viewport { flex-direction: column !important; overflow-y: auto !important; height: auto !important; }
+    .left-layout-channel, .right-monitor-channel, .monitor-fixed-card { width: 100% !important; max-width: 650px !important; height: auto !important; }
+    .left-scrollable-body { overflow-y: visible !important; height: auto !important; }
+    .video-monitor-frame { height: auto !important; aspect-ratio: 4 / 3 !important; }
+    .monitor-fixed-card { margin-top: 10px !important; }
+}
+/* ==========================================================================
+   LIVE PREVIEW CANVAS RESPONSIVE CONSTRAINT MATRIX
+   ========================================================================== */
+#vbox-screen-canvas {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    
+    /* Letterboxes the guest console screen to preserve original aspect ratio */
+    object-fit: contain !important;
+    
+    /* centers the canvas container layout box */
+    margin: auto !important; 
+}

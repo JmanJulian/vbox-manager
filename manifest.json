@@ -1,0 +1,9 @@
+{
+    "version": "1.0",
+    "menu": {
+        "index": {
+            "label": "VirtualBox Manager",
+            "order": 50
+        }
+    }
+}
