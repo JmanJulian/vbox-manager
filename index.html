@@ -1,40 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>VirtualBox Manager</title>
     <meta charset="utf-8">
+    <title>VirtualBox Manager</title>
     <link href="../base1/cockpit.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
     <script src="../base1/cockpit.js"></script>
+    <script src="vbox.js" defer></script>
 </head>
 <body>
-    <!-- MAIN VIEWPORT WRAPPER (PARALLEL LEFT & RIGHT FLOW CHANNELS) -->
     <div class="main-widescreen-viewport">
-
-        <!-- ================= LEFT SIDE LAYOUT CHANNEL ================= -->
+        
+        <!-- LEFT LAYOUT CHANNEL -->
         <div class="left-layout-channel">
-
-            <!-- FIXED TABS CONTAINER -->
             <div class="left-tab-header">
                 <div class="tabs-container">
-                    <button id="tab-overview-btn" class="tab-link active">🏠 VM Inventory</button>
-                    <button id="tab-config-btn" class="tab-link">⚙️ Hardware Config</button>
-                    <button id="tab-media-btn" class="tab-link">💾 Media Manager</button>
-                    <button id="tab-advanced-btn" class="tab-link">🔮 Advanced Settings</button>
+                    <button class="tab-link active" id="tab-overview-btn">🏠 VM Inventory</button>
+                    <button class="tab-link" id="tab-config-btn">⚙ Hardware Config</button>
+                    <button class="tab-link" id="tab-media-btn">💾 Media Manager</button>
+                    <button class="tab-link" id="tab-advanced-btn">🔮 Advanced Settings</button>
                 </div>
             </div>
 
-            <!-- SCROLLABLE LEFT PANELS STACK -->
             <div class="left-scrollable-body">
-
-                <!-- ================= TAB 1: OVERVIEW PANEL (UPGRADED DATA TABLE) ================= -->
+                <!-- TAB: OVERVIEW -->
                 <div id="tab-overview" class="tab-content active-content">
-
-                    <!-- Dense VM List Table Section -->
                     <div class="table-container">
                         <div class="table-header-toolbar">
                             <span class="toolbar-title">🔌 Virtual Machine Inventory</span>
-                            <button id="refresh-btn" class="secondary dense-btn">🔄 Refresh List</button>
+                            <button class="success dense-btn" id="refresh-btn">🔄 Refresh List</button>
                         </div>
                         <table class="dense-data-table">
                             <thead>
@@ -45,7 +39,6 @@
                                     <th>Power Lifecycle Actions</th>
                                 </tr>
                             </thead>
-                            <!-- Filled dynamically by vbox.js loops -->
                             <tbody id="vm-table-body">
                                 <tr>
                                     <td colspan="4" class="table-placeholder">Loading infrastructure array maps...</td>
@@ -54,113 +47,86 @@
                         </table>
                     </div>
 
-                    <!-- CREATE NEW VIRTUAL MACHINE ACCORDION BLOCK -->
-					<div class="card accordion-item">
-						<button class="accordion-trigger" id="acc-trigger-create-vm" type="button">
-							➕ Create New Virtual Machine
-							<span>▼</span>
-						</button>
+                    <input type="hidden" id="vm-list" value="">
 
-						<div class="accordion-panel" id="acc-create-vm">
-							<div class="form-group">
-								<label for="new-vm-name">Machine Host Name</label>
-								<input type="text" id="new-vm-name" placeholder="e.g. Ubuntu-Server-01">
-							</div>
+                    <!-- ACCORDION: CREATE VM -->
+                    <div class="accordion-item spacer-top">
+                        <button class="accordion-trigger" id="acc-trigger-create-vm">
+                            ➕ Create New Virtual Machine <span>▼</span>
+                        </button>
+                        <div class="accordion-panel" id="acc-create-vm">
+                            <div class="grid-two-columns">
+                                <div class="form-group">
+                                    <label>Machine Host Name</label>
+                                    <input type="text" id="new-vm-name" placeholder="e.g., Ubuntu_Server">
+                                </div>
+                                <div class="form-group">
+                                    <label>Guest OS Template Profile</label>
+                                    <select id="new-vm-ostype">
+                                        <option value="">Querying operating systems...</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="grid-two-columns spacer-top">
+                                <div class="form-group slider-dense-group">
+                                    <div class="space-between-row">
+                                        <label>Memory Allocation</label>
+                                        <span class="monospace-display" id="create-ram-val-display">8 MB / -- MB</span>
+                                    </div>
+                                    <input type="range" class="hardware-slider range-ram" id="new-vm-ram" min="8" max="4096" step="8" value="1024">
+                                </div>
+                                <div class="form-group slider-dense-group">
+                                    <div class="space-between-row">
+                                        <label>Processor Cores</label>
+                                        <span class="monospace-display" id="create-cpu-val-display">1 Cores / -- Cores</span>
+                                    </div>
+                                    <input type="range" class="hardware-slider range-cpu" id="new-vm-cores" min="1" max="4" step="1" value="1">
+                                </div>
+                            </div>
+                            <button class="success dense-btn spacer-top" id="create-vm-btn" style="width:100% !important;">✨ Create Virtual Machine</button>
+                        </div>
+                    </div>
 
-							<div class="form-group">
-								<label for="new-vm-ostype">Guest OS Template Profile</label>
-								<select id="new-vm-ostype">
-									<option value="">Querying operating systems...</option>
-								</select>
-							</div>
-
-							<!-- MEMORY ALLOCATION SLIDER -->
-							<div class="slider-dense-group">
-								<div class="space-between-row">
-									<label for="new-vm-ram">Memory Allocation</label>
-									<div class="monospace-display">
-										<span id="create-ram-val-display">1024</span> MB / <span id="create-ram-max-display">-- MB</span>
-									</div>
-								</div>
-								<input type="range" class="hardware-slider range-ram" id="new-vm-ram" min="8" max="4096" value="1024">
-							</div>
-
-							<!-- PROCESSOR CORES SLIDER -->
-							<div class="slider-dense-group">
-								<div class="space-between-row">
-									<label for="new-vm-cores">Processor Cores</label>
-									<div class="monospace-display">
-										<span id="create-cpu-val-display">1</span> Cores / <span id="create-cpu-max-display">-- Cores</span>
-									</div>
-								</div>
-								<input type="range" class="hardware-slider range-cpu" id="new-vm-cores" min="1" max="4" value="1">
-							</div>
-
-							<div class="spacer-top">
-								<button class="success" id="create-vm-btn" style="width: 100% !important;">✨ Create Virtual Machine</button>
-							</div>
-						</div>
-					</div>
-
-
-                    <!-- Danger Zone / Delete VM -->
-                    <div class="card card-danger-border dense-card">
-                        <h3>⚠️ Virtual Machine Deletion</h3>
+                    <!-- CARD: DELETE VM -->
+                    <div class="card card-danger-border spacer-top">
+                        <h3>⚠ Virtual Machine Deletion zone</h3>
                         <p class="danger-paragraph">Wiping a node is permanent. Ensure the node has a "POWER OFF" state badge before attempting.</p>
-
-                        <!-- Target Hidden Mirror Input read by background script logic -->
-                        <input type="hidden" id="vm-list" value="">
-
-                        <div class="form-group checkbox-row">
+                        <div class="checkbox-row">
                             <input type="checkbox" id="delete-files-check">
                             <label for="delete-files-check">Permanently delete all underlying virtual disk files from host storage</label>
                         </div>
-
-                        <div class="flex-buttons">
-                            <button id="delete-vm-btn" class="danger dense-btn">🗑️ Delete Virtual Machine</button>
-                        </div>
+                        <button class="danger dense-btn" id="delete-vm-btn" style="width:100% !important;">🗑 Delete Virtual Machine</button>
                     </div>
                 </div>
-
-                <!-- ================= TAB 2: HARDWARE CONFIG PANEL ================= -->
+                <!-- TAB: HARDWARE CONFIG -->
                 <div id="tab-config" class="tab-content">
-                    <div class="card dense-card">
-                        <h3>ℹ️ Target VM Properties: <span id="config-target-title" class="bold-green">None Selected</span></h3>
-                        <div id="vminfo">Select a VM row from the Inventory tab to modify metrics...</div>
+                    <div class="card">
+                        <h3 id="config-target-title">ℹ Target VM Properties: None Selected</h3>
+                        <p class="picker-title zero-margin">Select a VM row from the Inventory tab to modify metrics...</p>
                     </div>
-
-                    <!-- RAM, CPU, & GPU Configuration Form -->
-                    <div class="card dense-card">
-                        <h3>⚡ Edit VM Settings <span class="muted-text">(VM must be offline)</span></h3>
-
-                        <div class="form-group slider-dense-group">
-                            <div class="space-between-row">
-                                <label for="ram-amount">RAM Budget</label>
-                                <div class="monospace-display">
-                                    <span id="ram-val-display" class="bold-green">-- MB</span>
-                                    <span class="muted-divider"> / </span>
-                                    <span id="ram-max-display" class="muted-text">-- MB</span>
+                    
+                    <div class="card">
+                        <h3>⚡ Edit VM Settings (VM must be offline)</h3>
+                        <div class="grid-two-columns">
+                            <div class="form-group slider-dense-group">
+                                <div class="space-between-row">
+                                    <label>RAM Budget</label>
+                                    <span class="monospace-display" id="ram-val-display">8 MB / -- MB</span>
                                 </div>
+                                <input type="range" class="hardware-slider range-ram" id="ram-amount" min="8" max="4096" step="8" value="1024">
                             </div>
-                            <input type="range" id="ram-amount" class="hardware-slider range-ram" min="8" step="8" value="1024">
-                        </div>
-
-                        <div class="form-group slider-dense-group">
-                            <div class="space-between-row">
-                                <label for="cpu-count">Compute Slices</label>
-                                <div class="monospace-display">
-                                    <span id="cpu-val-display" class="bold-green">-- Cores</span>
-                                    <span class="muted-divider"> / </span>
-                                    <span id="cpu-max-display" class="muted-text">-- Cores</span>
+                            <div class="form-group slider-dense-group">
+                                <div class="space-between-row">
+                                    <label>Compute Slices</label>
+                                    <span class="monospace-display" id="cpu-val-display">1 Cores / -- Cores</span>
                                 </div>
+                                <input type="range" class="hardware-slider range-cpu" id="cpu-count" min="1" max="4" step="1" value="1">
                             </div>
-                            <input type="range" id="cpu-count" class="hardware-slider range-cpu" min="1" step="1" value="1">
                         </div>
-
-                        <!-- High-Density Graphics Controller Mapping Block -->
+                        
                         <div class="grid-two-columns spacer-top">
-                            <div>
-                                <label for="gpu-driver">Graphics Controller</label>
+                            <div class="form-group">
+                                <label>Graphics Controller</label>
                                 <select id="gpu-driver">
                                     <option value="vmsvga">VMSVGA (Modern Linux)</option>
                                     <option value="vboxsvga">VBoxSVGA (Modern Windows)</option>
@@ -168,105 +134,63 @@
                                     <option value="none">None (Disabled)</option>
                                 </select>
                             </div>
-                            <div>
-                                <label for="gpu-vram">Video Memory Budget</label>
+                            <div class="form-group">
+                                <label>Video Memory Budget</label>
                                 <select id="gpu-vram">
-                                    <option value="16">16 MB (Server Prompt)</option>
+                                    <option value="16">16 MB</option>
                                     <option value="32">32 MB</option>
                                     <option value="64">64 MB</option>
-                                    <option value="128">128 MB (Desktop GUI)</option>
-                                    <option value="256">256 MB (Heavy Display)</option>
+                                    <option value="128">128 MB</option>
+                                    <option value="256">256 MB</option>
                                 </select>
                             </div>
                         </div>
-
-                        <div class="form-group checkbox-row">
+                        <div class="checkbox-row spacer-top">
                             <input type="checkbox" id="gpu-3d-accelerate">
                             <label for="gpu-3d-accelerate">Enable 3D Hardware Graphics Acceleration</label>
                         </div>
-
-                        <div class="flex-buttons spacer-top">
-                            <button id="save-hw-btn" class="dense-btn">💾 Commit Core Changes</button>
-                        </div>
-                    </div>
-                    <!-- Network Adapter Management -->
-                    <div class="card dense-card">
-                        <h3>🌐 Network Adapter</h3>
-                        <div class="grid-two-columns">
-                            <div>
-                                <label>Adapter Slot</label>
-                                <select id="nic-slot">
-                                    <option value="1">NIC 1 (Slot 1)</option>
-                                    <option value="2">NIC 2 (Slot 2)</option>
-                                    <option value="3">NIC 3 (Slot 3)</option>
-                                    <option value="4">NIC 4 (Slot 4)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label>Attachment Network Driver</label>
-                                <select id="nic-attachment">
-                                    <option value="nat">NAT Engine</option>
-                                    <option value="bridged">Bridged Interconnect</option>
-                                    <option value="hostonly">Host-Only Bridge</option>
-                                    <option value="intnet">Internal Isolated Bus</option>
-                                    <option value="none">Disabled / Disconnected</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="grid-two-columns">
-                            <div>
-                                <label>Host Interface / Link Bus Target</label>
-                                <input type="text" id="nic-interface" placeholder="e.g. eth0, br0, vboxnet0">
-                            </div>
-                            <div>
-                                <label>Emulated Network Device Adapter</label>
-                                <select id="nic-driver">
-                                    <option value="virtio">Paravirtualized I/O (virtio-net)</option>
-                                    <option value="82540EM">Intel PRO/1000 MT Desktop</option>
-                                    <option value="Am79C973">PCnet-FAST III</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="flex-buttons">
-                            <button id="nic-save-btn" class="dense-btn">💾 Apply Link Config</button>
-                            <button id="nic-disable-btn" class="danger dense-btn">🔌 Kill Link Slot</button>
-                        </div>
+                        <button class="dense-btn spacer-top" id="save-hw-btn" style="width:100% !important;">💾 Commit Core Changes</button>
                     </div>
 
-                    <!-- Storage Drive Attachment -->
-                    <div class="card dense-card">
+                    <!-- STORAGE CONTROLLER ATTACHMENTS -->
+                    <div class="card">
                         <h3>💾 Controller Storage Array Attachments</h3>
-                        <div class="form-group">
-                            <label for="vdi-path">Virtual Disk Image Path (.vdi / .iso)</label>
-                            <input type="text" id="vdi-path" placeholder="/var/lib/virtualbox/disk.vdi">
-                            <div class="picker-container">
-                                <label class="picker-title">📁 Disk Image File Picker:</label>
-                                <div class="picker-search-row">
-                                    <input type="text" id="scan-dir-input" value="/var/lib/virtualbox" class="zero-margin">
-                                    <button id="scan-dir-btn" class="secondary zero-margin flex-shrink-btn dense-btn">Scan Folder</button>
-                                </div>
-                                <select id="dir-picker-select" class="zero-margin">
-                                    <option value="">-- Scan folder to index dynamic volumes --</option>
-                                </select>
+                        <span class="picker-title">Virtual Disk Image Path (.vdi / .iso)</span>
+                        <div class="picker-container">
+                            <div class="picker-search-row">
+                                <input type="text" id="scan-dir-input" value="/var/lib/virtualbox">
+                                <button class="secondary dense-btn flex-shrink-btn" id="scan-dir-btn">Scan Folder</button>
                             </div>
+                            <select id="dir-picker-select">
+                                <option value="">-- Scan folder to index dynamic volumes --</option>
+                            </select>
                         </div>
-                        <div class="flex-buttons">
-                            <button id="attach-btn">🔌 Mount Image to Controller</button>
-                            <button id="detach-btn" class="danger dense-btn">🪓 Unmount Drive Slot</button>
+                        <input type="text" id="vdi-path" class="spacer-top" placeholder="/path/to/image.vdi">
+                        <div class="flex-buttons spacer-top">
+                            <button class="success dense-btn" id="attach-btn">🔌 Mount Image</button>
+                            <button class="danger dense-btn" id="detach-btn">🪓 Unmount Slot</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- ================= TAB 3: VIRTUAL MEDIA MANAGER ================= -->
+                <!-- TAB: MEDIA MANAGER -->
                 <div id="tab-media" class="tab-content">
-                    <div class="card dense-card">
-                        <h3>🗄️ Storage Drive Image Allocation & Control</h3>
-                        <div class="form-group">
-                            <label for="media-path">Absolute File Target Path</label>
-                            <input type="text" id="media-path" placeholder="e.g., /var/lib/virtualbox/database.vdi">
+                    <div class="card">
+                        <h3>🗄 Storage Drive Image Allocation & Control</h3>
+                        <span class="picker-title">Absolute File Target Path</span>
+                        <div class="picker-container">
+                            <div class="picker-search-row">
+                                <input type="text" id="media-scan-dir-input" value="/var/lib/virtualbox">
+                                <button class="secondary dense-btn flex-shrink-btn" id="media-scan-dir-btn">Scan Folder</button>
+                            </div>
+                            <select id="media-picker-select">
+                                <option value="">-- Run scan index loop to retrieve virtual devices --</option>
+                            </select>
                         </div>
-                        <div class="grid-two-columns">
-                            <div>
+                        <input type="text" id="media-path" class="spacer-top" placeholder="/var/lib/virtualbox/disk.vdi">
+                        
+                        <div class="grid-two-columns spacer-top">
+                            <div class="form-group">
                                 <label>Image Format Standard</label>
                                 <select id="media-format">
                                     <option value="vdi">VDI (VirtualBox Native)</option>
@@ -274,148 +198,131 @@
                                     <option value="vhd">VHD (Legacy Hyper-V)</option>
                                 </select>
                             </div>
-                            <div>
+                            <div class="form-group">
                                 <label>Disk Size (GB)</label>
                                 <input type="number" id="media-size" value="20" min="1">
                             </div>
                         </div>
-                        <div class="form-group checkbox-row">
+                        <div class="checkbox-row spacer-top">
                             <input type="checkbox" id="media-preallocate">
-                            <label for="media-preallocate">Preallocate storage immediately (Fixed-Size Allocation)</label>
+                            <label for="media-preallocate">Preallocate storage immediately</label>
                         </div>
-                        <div class="flex-buttons">
-                            <button id="media-create-btn" class="success dense-btn">➕ Create Virtual Disk</button>
-                            <button id="media-resize-btn" class="dense-btn">📐 Resize Virtual Disk</button>
-                            <button id="media-delete-btn" class="danger dense-btn">🗑️ Delete Virtual Disk</button>
-                        </div>
-                    </div>
-
-                    <div class="card dense-card">
-                        <h3>🔍 VirtualBox Media Folder</h3>
-                        <div class="picker-container">
-                            <div class="picker-search-row">
-                                <input type="text" id="media-scan-dir-input" value="/var/lib/virtualbox" class="zero-margin">
-                                <button id="media-scan-dir-btn" class="secondary zero-margin flex-shrink-btn dense-btn">Scan Folder</button>
-                            </div>
-                            <select id="media-picker-select" class="zero-margin">
-                                <option value="">-- Run scan index loop to retrieve virtual devices --</option>
-                            </select>
+                        <div class="flex-buttons spacer-top">
+                            <button class="success dense-btn" id="media-create-btn">➕ Create Disk</button>
+                            <button class="secondary dense-btn" id="media-resize-btn">📐 Resize Disk</button>
+                            <button class="danger dense-btn" id="media-delete-btn">🗑 Delete Disk</button>
                         </div>
                     </div>
                 </div>
-                <!-- ================= TAB 4: ADVANCED OPERATIONS MATRIX ================= -->
+                <!-- TAB: ADVANCED SETTINGS -->
                 <div id="tab-advanced" class="tab-content">
-                    <div class="card dense-card">
-                        <h3>ℹ️ Selected VM: <span id="adv-target-title" class="bold-green">None Selected</span></h3>
-                        <p class="danger-paragraph">Advanced features require clicking an active node row on the VM Inventory tab first.</p>
+                    <div class="card">
+                        <h3>ℹ Selected VM: <span id="adv-target-title">None Selected</span></h3>
+                        <p class="picker-title zero-margin">Advanced features require clicking a VM row first.</p>
                     </div>
 
-                    <!-- ACCORDION SECTION 1: TIME CHECKPOINT SNAPSHOTS -->
-                    <div class="accordion-item">
-                        <button id="acc-trigger-snapshots" class="accordion-trigger">🕒 Checkpoint / Snapshots Manager <span>▼</span></button>
-                        <div id="acc-snapshots" class="accordion-panel">
-                            <div class="form-group spacer-top">
-                                <label>Checkpoint Name / Label</label>
-                                <input type="text" id="snap-name" placeholder="e.g. Before_Upgrade_Patch">
+                    <!-- SNAPSHOTS -->
+                    <div class="accordion-item spacer-top">
+                        <button class="accordion-trigger" id="acc-trigger-snapshots">
+                            🕒 Checkpoint / Snapshots Manager <span>▼</span>
+                        </button>
+                        <div class="accordion-panel" id="acc-snapshots">
+                            <label>Checkpoint Name / Label</label>
+                            <div class="picker-search-row">
+                                <input type="text" id="snap-name" placeholder="Snapshot Description">
+                                <button class="success dense-btn flex-shrink-btn" id="snap-take-btn">📸 Take Snapshot</button>
                             </div>
-                            <div class="flex-buttons">
-                                <button id="snap-take-btn" class="success inline-dense-btn">📸 Take Snapshot</button>
-                                <button id="snap-restore-btn" class="inline-dense-btn">⏪ Restore Selected Checkpoint</button>
-                                <button id="snap-delete-btn" class="danger inline-dense-btn">🗑️ Delete Checkpoint</button>
-                            </div>
-                            <div class="picker-container spacer-top">
-                                <label class="picker-title">Available VM Checkpoints:</label>
-                                <select id="snap-picker-select" class="zero-margin"><option value="">-- No active checkpoints indexed --</option></select>
+                            <label class="spacer-top">Available VM Checkpoints:</label>
+                            <select id="snap-picker-select"></select>
+                            <div class="flex-buttons spacer-top">
+                                <button class="success dense-btn" id="snap-restore-btn">⏪ Restore Checkpoint</button>
+                                <button class="danger dense-btn" id="snap-delete-btn">🗑 Delete Checkpoint</button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- ACCORDION SECTION 2: NAT PORT FORWARDING ENGINE -->
+                    <!-- NAT PORT MAPPING -->
                     <div class="accordion-item spacer-top">
-                        <button id="acc-trigger-nat" class="accordion-trigger">🔌 NAT Port Forwarding Rules Engine <span>▼</span></button>
-                        <div id="acc-nat" class="accordion-panel">
-                            <div class="grid-two-columns spacer-top">
-                                <div>
-                                    <label>Rule Label ID</label>
-                                    <input type="text" id="nat-rule-name" placeholder="e.g. web_traffic">
-                                </div>
-                                <div>
-                                    <label>Protocol Standard</label>
-                                    <select id="nat-proto"><option value="tcp">TCP</option><option value="udp">UDP</option></select>
-                                </div>
-                            </div>
+                        <button class="accordion-trigger" id="acc-trigger-nat">
+                            🔌 NAT Port Forwarding Rules Engine <span>▼</span>
+                        </button>
+                        <div class="accordion-panel" id="acc-nat">
                             <div class="grid-two-columns">
-                                <div>
+                                <div class="form-group">
+                                    <label>Rule Label ID</label>
+                                    <input type="text" id="nat-rule-name" placeholder="ssh-rule">
+                                </div>
+                                <div class="form-group">
+                                    <label>Protocol Standard</label>
+                                    <select id="nat-proto">
+                                        <option value="tcp">TCP</option>
+                                        <option value="udp">UDP</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="grid-two-columns spacer-top">
+                                <div class="form-group">
                                     <label>Host Mapping Port</label>
-                                    <input type="number" id="nat-host-port" placeholder="e.g. 8080">
+                                    <input type="number" id="nat-host-port" placeholder="2222">
                                 </div>
-                                <div>
+                                <div class="form-group">
                                     <label>Guest Destination Port</label>
-                                    <input type="number" id="nat-guest-port" placeholder="e.g. 80">
+                                    <input type="number" id="nat-guest-port" placeholder="22">
                                 </div>
                             </div>
-                            <div class="flex-buttons">
-                                <button id="nat-add-btn" class="success inline-dense-btn">➕ Inject NAT Routing Rule</button>
-                                <button id="nat-del-btn" class="danger inline-dense-btn">❌ Delete Routing Rule</button>
-                            </div>
-                            <div class="picker-container spacer-top">
-                                <label class="picker-title">Active Forwarding Rules (NIC 1 NAT):</label>
-                                <select id="nat-picker-select" class="zero-margin"><option value="">-- Query a node to parse forwarding arrays --</option></select>
+                            <button class="success dense-btn spacer-top" id="nat-add-btn" style="width:100% !important;">➕ Inject NAT Rule</button>
+                            <label class="spacer-top">Active Forwarding Rules (NIC 1 NAT):</label>
+                            <div class="picker-search-row">
+                                <select id="nat-picker-select" style="margin:0!important;"></select>
+                                <button class="danger dense-btn flex-shrink-btn" id="nat-del-btn">❌ Delete Rule</button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- ACCORDION SECTION 3: SHARED FOLDERS SYSTEM -->
+                    <!-- SHARED FOLDERS -->
                     <div class="accordion-item spacer-top">
-                        <button id="acc-trigger-shared" class="accordion-trigger">📁 Host Shared Folders Interconnect <span>▼</span></button>
-                        <div id="acc-shared" class="accordion-panel">
-                            <div class="grid-two-columns spacer-top">
-                                <div>
+                        <button class="accordion-trigger" id="acc-trigger-shared">
+                            📁 Host Shared Folders Interconnect <span>▼</span>
+                        </button>
+                        <div class="accordion-panel" id="acc-shared">
+                            <div class="grid-two-columns">
+                                <div class="form-group">
                                     <label>Share Label ID Name</label>
-                                    <input type="text" id="sf-name" placeholder="e.g. web_data">
+                                    <input type="text" id="sf-name" placeholder="shared-data">
                                 </div>
-                                <div>
+                                <div class="form-group">
                                     <label>Absolute Host Path</label>
-                                    <input type="text" id="sf-path" placeholder="e.g. /var/www/shares">
+                                    <input type="text" id="sf-path" placeholder="/home/user/shares">
                                 </div>
                             </div>
-                            <div class="form-group checkbox-row">
+                            <div class="checkbox-row spacer-top">
                                 <input type="checkbox" id="sf-automount" checked>
                                 <label for="sf-automount">Enable background Auto-Mount on machine start</label>
                             </div>
-                            <div class="flex-buttons">
-                                <button id="sf-add-btn" class="success inline-dense-btn">➕ Mount Host Folder</button>
-                                <button id="sf-del-btn" class="danger inline-dense-btn">❌ Sever Shared Folder</button>
-                            </div>
-                            <div class="picker-container spacer-top">
-                                <label class="picker-title">Active Mounted Folders:</label>
-                                <select id="sf-picker-select" class="zero-margin"><option value="">-- Query a node row to map mount points --</option></select>
+                            <button class="success dense-btn" id="sf-add-btn" style="width:100% !important;">➕ Mount Host Folder</button>
+                            <label class="spacer-top">Active Mounted Folders:</label>
+                            <div class="picker-search-row">
+                                <select id="sf-picker-select" style="margin:0!important;"></select>
+                                <button class="danger dense-btn flex-shrink-btn" id="sf-del-btn">❌ Sever Folder</button>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Global System Call Execution Logs -->
-                <label class="execution-log-label">Execution Logs</label>
-                <div id="output">Ready.</div>
             </div>
+
+            <label class="execution-log-label">Execution Logs</label>
+            <div id="output">Ready.</div>
         </div>
 
-        <!-- ================= RIGHT SIDE GLOBAL LIVE CONSOLE SCREEN ================= -->
+        <!-- RIGHT MONITOR CHANNEL -->
         <div class="right-monitor-channel">
             <div class="card monitor-fixed-card">
-                <h3 class="monitor-header-fix">🖥️ Global Live View Console</h3>
+                <h3 class="monitor-header-fix">🖥 Global Live View Console</h3>
                 <div class="video-monitor-frame">
                     <img id="vbox-screen-canvas" alt="[Highlight a live cluster row node to stream console screen]">
                 </div>
-                <div class="flex-buttons monitor-btn-fix">
-                    <button id="screen-refresh-btn" class="secondary dense-btn">📸 Refresh Display Stream</button>
-                </div>
             </div>
         </div>
-
-    </div> <!-- End Master Viewport Split -->
-
-    <script src="vbox.js"></script>
+    </div>
 </body>
 </html>
