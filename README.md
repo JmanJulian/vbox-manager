@@ -13,7 +13,7 @@ cockpit addon to manage headless VirtualBox VM on linux servers (it is basically
 To use it just place all files in a folder and place that folder in youre userfolder under .local/share/cockpit/: and relog in cockpit to load new plugin.
 EXAMPLE: /home/YOURUSERNAME/.local/share/cockpit/vbox-manager
 
-![alt tag](https://github.com/JmanJulian/vbox-manager/blob/main/img/1.PNG)
-![alt tag](https://github.com/JmanJulian/vbox-manager/blob/main/img/2.PNG)
-![alt tag](https://github.com/JmanJulian/vbox-manager/blob/main/img/3.PNG)
-![alt tag](https://github.com/JmanJulian/vbox-manager/blob/main/img/4.PNG)
+![alt tag](https://github.com/JmanJulian/vbox-manager/blob/vbox-manager-Python-backend/img/1.PNG)
+![alt tag](https://github.com/JmanJulian/vbox-manager/blob/vbox-manager-Python-backend/img/2.PNG)
+![alt tag](https://github.com/JmanJulian/vbox-manager/blob/vbox-manager-Python-backend/img/3.PNG)
+![alt tag](https://github.com/JmanJulian/vbox-manager/blob/vbox-manager-Python-backend/img/4.PNG)
