@@ -17,3 +17,8 @@ EXAMPLE: /home/YOURUSERNAME/.local/share/cockpit/vbox-manager
 ![alt tag](https://github.com/JmanJulian/vbox-manager/blob/vbox-manager-Python-backend/img/2.PNG)
 ![alt tag](https://github.com/JmanJulian/vbox-manager/blob/vbox-manager-Python-backend/img/3.PNG)
 ![alt tag](https://github.com/JmanJulian/vbox-manager/blob/vbox-manager-Python-backend/img/4.PNG)
+
+![VM Inventory](./img/1.PNG)
+![Hardware Config](./img/2.PNG)
+![Media Manager](./img/3.PNG)
+![Advanced Settings](./img/4.PNG)
