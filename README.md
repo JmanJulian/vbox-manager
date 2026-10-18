@@ -1,4 +1,3 @@
-<meta name="google-site-verification" content="07Rl_raUC5M92y4kTzv8nvg6_j3dZy33sLsOum3xWkg" />
 # vbox-manager
 cockpit addon to manage headless VirtualBox VM on linux servers (it is basically a GUI wrapper for VirtualBox native console management utility "vboxmanage")
 
