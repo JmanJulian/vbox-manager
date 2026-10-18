@@ -5,15 +5,14 @@ cockpit addon to manage headless VirtualBox VM on linux servers (it is basically
 ---
 
 ### ⚠️ Disclaimer & Liability Waiver
-* **DISCLAIMER: This code was generated using googles free gemini search AI over several days of prompts most/all functions seam to work on my machine but no guarantees. Since it just runs vboxmanage command it should work on all machines.
+* **DISCLAIMER: This code was generated using googles free gemini search AI over several days of prompts most/all functions seem to work on my machine but no guarantees. Since it just runs vboxmanage command it should work on all machines.
 * **No Warranty:** This software is provided "AS IS", without any guarantees or warranties. The author accepts no liability or responsibility for data loss, server corruption, broken VirtualBox environments, or system downtime resulting from its deployment. Use entirely at your own risk.
 * **Trademark Affiliation:** This project is an independent, community-driven open-source extension. It is not affiliated with, authorized, endorsed, or sponsored by Oracle Corporation, VirtualBox, or any of their corporate partners.
 
 
-To use it just place all files in a folder and place that folder in youre userfolder under .local/share/cockpit/: and relog in cockpit to load new plugin.
+To use it just place all files in a folder and place that folder in your user folder under .local/share/cockpit/: and relog in cockpit to load new plugin.
 EXAMPLE: /home/YOURUSERNAME/.local/share/cockpit/vbox-manager
 
-**[Click Here to Run the Live Interactive Web UI Demo!](./Sorce/index.html)**
 **[Click Here to Run the Live Interactive Web UI Demo!](./Sorce/index.html)**
 
 ![VM Inventory](./img/1.PNG)
